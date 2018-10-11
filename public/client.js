@@ -1,8 +1,13 @@
 $( document ).ready(function() {
   /*global io*/
   var socket = io();
-  
-   
+
+  socket.on('user count', function(data){
+    console.log(data);
+  });
+
+  socket.on('disconnect', () => { console.log('disconnected') });
+
   // Form submittion with new message in field with id 'm'
   $('form').submit(function(){
     var messageToSend = $('#m').val();
