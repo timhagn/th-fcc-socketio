@@ -62,11 +62,27 @@ mongo.connect(process.env.DATABASE, { useNewUrlParser: true }, (err, client) => 
       console.log('user ' + socket.request.user.name + ' connected');
       ++currentUsers;
       io.emit('user count', currentUsers);
-      io.emit('user', {name: socket.request.user.name, currentUsers, connected: true});
+      io.emit('user', {
+        name: socket.request.user.name,
+        currentUsers,
+        connected: true
+      });
+
       socket.on('disconnect', () => {
         --currentUsers;
         io.emit('user count', currentUsers);
-        io.emit('user', {name: socket.request.user.name, currentUsers, connected: false});
+        io.emit('user', {
+          name: socket.request.user.name,
+          currentUsers,
+          connected: false
+        });
+      });
+
+      socket.on('chat message', message => {
+        io.emit('chat message', {
+          name: socket.request.user.name,
+          message: message
+        });
       });
     });
 

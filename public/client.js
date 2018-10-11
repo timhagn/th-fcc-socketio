@@ -17,10 +17,17 @@ $( document ).ready(function() {
     $('#messages').append($('<li>').html('<b>'+ message +'<\/b>'));
   });
 
+  socket.on('chat message', function(data){
+    var name = data.name,
+        message = data.message;
+    $('#messages').append($('<li>').html(name + ': '+ message));
+  });
+
   // Form submittion with new message in field with id 'm'
   $('form').submit(function(){
     var messageToSend = $('#m').val();
     //send message to server here?
+    socket.emit('chat message', messageToSend);
     $('#m').val('');
     return false; // prevent form submit from refreshing page
   });
